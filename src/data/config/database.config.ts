@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'node:path';
 import { DataSource } from 'typeorm';
 
 export const DBConnection = new DataSource({

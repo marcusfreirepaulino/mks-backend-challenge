@@ -4,14 +4,14 @@ import { MovieEntity } from 'src/data/entity/movie.entity';
 import { Injectable } from '@nestjs/common';
 
 interface UpdateParams extends Partial<MovieInputModel> {
-  id: string;
+  id: number;
 }
 
 @Injectable()
-export class MoviesDbDatasource {
+export class MovieDbDatasource {
   private readonly repository = DBConnection.getRepository(MovieEntity);
 
-  insert(input: MovieInputModel) {
+  insert(input: MovieInputModel): Promise<MovieModel> {
     return this.repository.save(input);
   }
 

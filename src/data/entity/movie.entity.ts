@@ -1,6 +1,7 @@
-import { Column } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { BaseEntity } from './base-abstract.entity';
 
+@Entity('movie')
 export class MovieEntity extends BaseEntity {
   @Column()
   name: string;

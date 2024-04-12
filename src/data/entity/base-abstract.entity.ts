@@ -1,13 +1,11 @@
 import {
   CreateDateColumn,
   DeleteDateColumn,
-  Entity,
   Generated,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('user')
 export abstract class BaseEntity {
   @Generated('increment')
   @PrimaryColumn()

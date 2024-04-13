@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/utils/auth/auth.guard';
 import {
   LoginInputModel,
@@ -10,6 +18,7 @@ import { GetUserService } from 'src/service/user/get-user.service';
 import { LoginService } from 'src/service/user/login.service';
 import { ZodPipe } from 'src/utils/validation/zod.pipe';
 import { userSchema } from 'src/service/validators/user.validators';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('user')
 export class UserController {
@@ -19,6 +28,7 @@ export class UserController {
     private readonly getUserService: GetUserService,
   ) {}
 
+  @UseInterceptors(CacheInterceptor)
   @Get()
   @UseGuards(AuthGuard)
   getUser(@Req() req: { email: string }) {

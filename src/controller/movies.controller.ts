@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/utils/auth/auth.guard';
 import {
@@ -26,6 +27,7 @@ import {
   listMoviesSchema,
   movieSchema,
 } from 'src/service/validators/movies.validators';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('movies')
 export class MoviesController {
@@ -43,6 +45,7 @@ export class MoviesController {
     return this.createMovieService.exec(input);
   }
 
+  @UseInterceptors(CacheInterceptor)
   @Get()
   @UseGuards(AuthGuard)
   listMovies(
@@ -51,6 +54,7 @@ export class MoviesController {
     return this.listMoviesService.exec(input);
   }
 
+  @UseInterceptors(CacheInterceptor)
   @Get(':id')
   @UseGuards(AuthGuard)
   getMovie(@Param('id') id: number): Promise<MovieModel> {

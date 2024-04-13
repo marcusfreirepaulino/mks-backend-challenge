@@ -28,6 +28,7 @@ import {
   movieSchema,
 } from 'src/service/validators/movies.validators';
 import { CacheInterceptor } from '@nestjs/cache-manager';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('movies')
 export class MoviesController {
@@ -39,12 +40,14 @@ export class MoviesController {
     private readonly deleteMovieService: DeleteMovieService,
   ) {}
 
+  @ApiTags('Movies')
   @Post()
   @UseGuards(AuthGuard)
   create(@Body() input: MovieInputModel): Promise<MovieModel> {
     return this.createMovieService.exec(input);
   }
 
+  @ApiTags('Movies')
   @UseInterceptors(CacheInterceptor)
   @Get()
   @UseGuards(AuthGuard)
@@ -54,6 +57,7 @@ export class MoviesController {
     return this.listMoviesService.exec(input);
   }
 
+  @ApiTags('Movies')
   @UseInterceptors(CacheInterceptor)
   @Get(':id')
   @UseGuards(AuthGuard)
@@ -61,6 +65,7 @@ export class MoviesController {
     return this.getMovieService.exec(id);
   }
 
+  @ApiTags('Movies')
   @Put(':id')
   @UseGuards(AuthGuard)
   updateMovie(
@@ -70,6 +75,7 @@ export class MoviesController {
     return this.updateMovieService.exec(id, input);
   }
 
+  @ApiTags('Movies')
   @Delete(':id')
   @UseGuards(AuthGuard)
   deleteMovie(@Param('id') id: number): Promise<string> {

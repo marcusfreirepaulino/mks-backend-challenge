@@ -19,6 +19,7 @@ import { LoginService } from 'src/service/user/login.service';
 import { ZodPipe } from 'src/utils/validation/zod.pipe';
 import { userSchema } from 'src/service/validators/user.validators';
 import { CacheInterceptor } from '@nestjs/cache-manager';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
@@ -28,13 +29,7 @@ export class UserController {
     private readonly getUserService: GetUserService,
   ) {}
 
-  @UseInterceptors(CacheInterceptor)
-  @Get()
-  @UseGuards(AuthGuard)
-  getUser(@Req() req: { email: string }) {
-    return this.getUserService.exec(req.email);
-  }
-
+  @ApiTags('User')
   @Post()
   create(
     @Body(new ZodPipe(userSchema)) input: UserInputModel,
@@ -42,8 +37,17 @@ export class UserController {
     return this.createUserService.exec(input);
   }
 
+  @ApiTags('User')
   @Get('/login')
   login(@Body() input: LoginInputModel): Promise<LoginModel> {
     return this.loginService.exec(input);
+  }
+
+  @ApiTags('User')
+  @UseInterceptors(CacheInterceptor)
+  @Get()
+  @UseGuards(AuthGuard)
+  getUser(@Req() req: { email: string }) {
+    return this.getUserService.exec(req.email);
   }
 }

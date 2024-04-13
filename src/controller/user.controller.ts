@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/utils/auth/auth.guard';
 import {
   LoginInputModel,
   LoginModel,
@@ -8,6 +8,8 @@ import {
 import { CreateUserService } from 'src/service/user/create-user.service';
 import { GetUserService } from 'src/service/user/get-user.service';
 import { LoginService } from 'src/service/user/login.service';
+import { ZodPipe } from 'src/utils/validation/zod.pipe';
+import { userSchema } from 'src/service/validators/user.validators';
 
 @Controller('user')
 export class UserController {
@@ -24,7 +26,9 @@ export class UserController {
   }
 
   @Post()
-  create(@Body() input: UserInputModel): Promise<string> {
+  create(
+    @Body(new ZodPipe(userSchema)) input: UserInputModel,
+  ): Promise<string> {
     return this.createUserService.exec(input);
   }
 

@@ -8,7 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/utils/auth/auth.guard';
 import {
   ListMoviesInputModel,
   MovieInputModel,
@@ -21,6 +21,11 @@ import { DeleteMovieService } from 'src/service/movie/delete-movie.service';
 import { GetMovieService } from 'src/service/movie/get-movie.service';
 import { ListMoviesService } from 'src/service/movie/list-movies.service';
 import { UpdateMovieService } from 'src/service/movie/update-movie.service';
+import { ZodPipe } from 'src/utils/validation/zod.pipe';
+import {
+  listMoviesSchema,
+  movieSchema,
+} from 'src/service/validators/movies.validators';
 
 @Controller('movies')
 export class MoviesController {
@@ -41,7 +46,7 @@ export class MoviesController {
   @Get()
   @UseGuards(AuthGuard)
   listMovies(
-    @Body() input: ListMoviesInputModel,
+    @Body(new ZodPipe(listMoviesSchema)) input: ListMoviesInputModel,
   ): Promise<PaginatedMoviesModel> {
     return this.listMoviesService.exec(input);
   }
@@ -56,7 +61,7 @@ export class MoviesController {
   @UseGuards(AuthGuard)
   updateMovie(
     @Param('id') id: number,
-    @Body() input: UpdateMovieInputModel,
+    @Body(new ZodPipe(movieSchema)) input: UpdateMovieInputModel,
   ): Promise<string> {
     return this.updateMovieService.exec(id, input);
   }

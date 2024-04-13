@@ -6,14 +6,14 @@ import { UpdateMovieInputModel } from 'src/model/movie.model';
 export class UpdateMovieService {
   constructor(private readonly datasource: MovieDbDatasource) {}
 
-  async exec(input: UpdateMovieInputModel): Promise<string> {
-    const movie = await this.datasource.findOne(input.id);
+  async exec(id: number, input: UpdateMovieInputModel): Promise<string> {
+    const movie = await this.datasource.findOne(id);
 
     if (!movie) {
       throw new Error('Filme não encontrado.');
     }
 
-    await this.datasource.update(input);
+    await this.datasource.update({ id, ...input });
 
     return 'Filme atuaizado com sucesso.';
   }

@@ -10,3 +10,12 @@ export interface AuthModel extends UserModel {
 }
 
 export type UserInputModel = Omit<AuthModel, 'id'>;
+
+export interface LoginInputModel {
+  email: string;
+  password: string;
+}
+
+export interface LoginModel {
+  token: string;
+}

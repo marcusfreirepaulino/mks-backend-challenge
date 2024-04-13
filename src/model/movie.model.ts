@@ -7,9 +7,7 @@ export interface MovieModel {
 
 export type MovieInputModel = Omit<MovieModel, 'id'>;
 
-export interface UpdateMovieInputModel extends Partial<MovieInputModel> {
-  id: number;
-}
+export type UpdateMovieInputModel = Partial<MovieInputModel>;
 
 export interface ListMoviesInputModel {
   page?: number;

@@ -52,7 +52,7 @@ export class MoviesController {
     @Param('id') id: number,
     @Body() input: UpdateMovieInputModel,
   ): Promise<string> {
-    return this.updateMovieService.exec(input);
+    return this.updateMovieService.exec(id, input);
   }
 
   @Delete(':id')

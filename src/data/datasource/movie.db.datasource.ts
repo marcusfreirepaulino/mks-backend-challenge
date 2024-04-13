@@ -3,6 +3,11 @@ import { DBConnection } from 'src/data/config/database.config';
 import { MovieEntity } from 'src/data/entity/movie.entity';
 import { Injectable } from '@nestjs/common';
 
+interface FindManyParams {
+  limit: number;
+  offset: number;
+}
+
 interface UpdateParams extends Partial<MovieInputModel> {
   id: number;
 }
@@ -17,6 +22,14 @@ export class MovieDbDatasource {
 
   findOne(id: number): Promise<MovieModel | null> {
     return this.repository.findOneBy({ id });
+  }
+
+  findMany(input: FindManyParams): Promise<[MovieModel[], number]> {
+    return this.repository.findAndCount({
+      take: input.limit,
+      skip: input.offset,
+      order: { name: 'ASC' },
+    });
   }
 
   async update(input: UpdateParams): Promise<void> {

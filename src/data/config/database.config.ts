@@ -1,8 +1,10 @@
-import * as path from 'node:path';
 import { DataSource } from 'typeorm';
+import { MovieEntity } from '../entity/movie.entity';
+import { UserEntity } from '../entity/user.entity';
 
 export const DBConnection = new DataSource({
   type: 'postgres',
-  entities: [path.join(__dirname + '..') + '/entity/*.{ts,js}'],
+  entities: [MovieEntity, UserEntity],
   url: process.env.DATABASE_URL,
+  synchronize: true,
 });

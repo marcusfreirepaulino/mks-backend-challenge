@@ -6,7 +6,9 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import {
   ListMoviesInputModel,
   MovieInputModel,
@@ -31,11 +33,13 @@ export class MoviesController {
   ) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   create(@Body() input: MovieInputModel): Promise<MovieModel> {
     return this.createMovieService.exec(input);
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   listMovies(
     @Body() input: ListMoviesInputModel,
   ): Promise<PaginatedMoviesModel> {
@@ -43,11 +47,13 @@ export class MoviesController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard)
   getMovie(@Param('id') id: number): Promise<MovieModel> {
     return this.getMovieService.exec(id);
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard)
   updateMovie(
     @Param('id') id: number,
     @Body() input: UpdateMovieInputModel,
@@ -56,6 +62,7 @@ export class MoviesController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   deleteMovie(@Param('id') id: number): Promise<string> {
     return this.deleteMovieService.exec(id);
   }

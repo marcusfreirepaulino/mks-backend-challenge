@@ -10,7 +10,7 @@ export class GetMovieService {
     const movie = await this.datasource.findOne(id);
 
     if (!movie) {
-      throw new HttpException('Filme não encontrado.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Filme não encontrado.', HttpStatus.NOT_FOUND);
     }
 
     return {

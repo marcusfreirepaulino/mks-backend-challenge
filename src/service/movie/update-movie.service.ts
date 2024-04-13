@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { MovieDbDatasource } from 'src/data/datasource/movie.db.datasource';
 import { UpdateMovieInputModel } from 'src/model/movie.model';
 
@@ -10,7 +10,7 @@ export class UpdateMovieService {
     const movie = await this.datasource.findOne(id);
 
     if (!movie) {
-      throw new Error('Filme não encontrado.');
+      throw new HttpException('Filme não encontrado.', HttpStatus.BAD_REQUEST);
     }
 
     await this.datasource.update({ id, ...input });

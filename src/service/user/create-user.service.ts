@@ -1,7 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserDbDatasource } from 'src/data/datasource/user.db.datasource';
 import { UserInputModel } from 'src/model/user.model';
-import { generateHashWithSalt, generateRandomPassword } from 'src/utils/crypto';
+import {
+  generateHashWithSalt,
+  generateRandomPassword,
+} from 'src/utils/crypto/crypto';
 
 @Injectable()
 export class CreateUserService {
@@ -11,7 +14,10 @@ export class CreateUserService {
     const user = await this.datasource.findByEmail(input.email);
 
     if (user) {
-      throw new Error('Já existe um usuário com este email.');
+      throw new HttpException(
+        'Já existe um usuário com este email.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const salt = generateRandomPassword();

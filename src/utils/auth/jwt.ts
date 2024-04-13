@@ -10,5 +10,6 @@ export function signJwt<T>(payload: T): string {
 }
 
 export function verifyJwt(token: string) {
-  return verify(token, JWT_SECRET);
+  const removeBearerToken = token.replace('Bearer ', '');
+  return verify(removeBearerToken, JWT_SECRET);
 }

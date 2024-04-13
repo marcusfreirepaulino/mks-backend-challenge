@@ -2,7 +2,6 @@ import 'dotenv/config';
 import { DBConnection } from './data/config/database.config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
-import { ZodFilter } from './utils/validation/zod.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -15,11 +14,11 @@ async function bootstrap() {
       'API criada para o desafio da MKS - Desenvolvimento de sistemas',
     )
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.useGlobalFilters(new ZodFilter());
   await app.listen(3000);
 }
 bootstrap();

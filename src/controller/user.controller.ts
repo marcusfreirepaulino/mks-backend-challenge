@@ -1,8 +1,8 @@
 import {
-  Body,
   Controller,
   Get,
   Post,
+  Query,
   Req,
   UseGuards,
   UseInterceptors,
@@ -16,11 +16,10 @@ import {
 import { CreateUserService } from 'src/service/user/create-user.service';
 import { GetUserService } from 'src/service/user/get-user.service';
 import { LoginService } from 'src/service/user/login.service';
-import { ZodPipe } from 'src/utils/validation/zod.pipe';
-import { userSchema } from 'src/service/validators/user.validators';
 import { CacheInterceptor } from '@nestjs/cache-manager';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
   constructor(
@@ -29,20 +28,21 @@ export class UserController {
     private readonly getUserService: GetUserService,
   ) {}
 
+  @ApiOperation({ summary: 'Cria um novo usuário' })
   @ApiTags('User')
   @Post()
-  create(
-    @Body(new ZodPipe(userSchema)) input: UserInputModel,
-  ): Promise<string> {
+  create(@Query() input: UserInputModel): Promise<string> {
     return this.createUserService.exec(input);
   }
 
+  @ApiOperation({ summary: 'Loga em um usuário existente' })
   @ApiTags('User')
   @Get('/login')
-  login(@Body() input: LoginInputModel): Promise<LoginModel> {
+  login(@Query() input: LoginInputModel): Promise<LoginModel> {
     return this.loginService.exec(input);
   }
 
+  @ApiOperation({ summary: 'Recebe os dados do usuário atual' })
   @ApiTags('User')
   @UseInterceptors(CacheInterceptor)
   @Get()
